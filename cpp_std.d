@@ -26,7 +26,7 @@ extern(C++, std) {
     this();
     this(const(T*) _, const ref allocator!T _);
     
-    private void[8] _; // should probably match sizeof(std::string) to pad the object correctly.
+    private void[8] _; // to match sizeof(std::string) and pad the object correctly.
   }
   
   alias basic_string!char string;
@@ -37,4 +37,5 @@ extern(C++, std) {
 void main() {
   auto s = new std.string();
   // undefined reference to std::basic_string<char, std::char_traits<char>, std::allocator<char> >::__ctor()
+  // should be              std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string()
 }
