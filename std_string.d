@@ -6,7 +6,7 @@ import std_allocator;
 ///////////////////////////////////////////////////////////////////////////////
 // std::string declaration.
 //
-// Current caveats
+// Current caveats :
 // - manual name mangling (=> only string is functionnal, wstring won't work)
 //   See https://issues.dlang.org/show_bug.cgi?id=14086.
 // - won't work with custom allocators.
@@ -165,7 +165,7 @@ extern(C++, std) {
     
     private:
       void[8] _ = void; // to match sizeof(std::string) and pad the object correctly.
-      __gshared static immutable allocator!char defaultAlloc;
+      __gshared static immutable allocator!T defaultAlloc;
   }
   
   alias basic_string!char std_string;
