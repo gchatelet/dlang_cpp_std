@@ -1,12 +1,15 @@
 
 pragma(lib, "/lib/libstdc++.a"); // get all symbols with "nm -Cgnu -g -A /lib/libstdc++.a"
 
+import std_allocator;
+
 ///////////////////////////////////////////////////////////////////////////////
 // std::string declaration.
 //
 // Current caveats
 // - manual name mangling (=> only string is functionnal, wstring won't work)
 //   See https://issues.dlang.org/show_bug.cgi?id=14086.
+// - won't work with custom allocators.
 // - missing noexcept 
 // - iterators are implemented as pointers
 // - no reverse_iterator nor rbegin/rend
@@ -14,8 +17,6 @@ pragma(lib, "/lib/libstdc++.a"); // get all symbols with "nm -Cgnu -g -A /lib/li
 ///////////////////////////////////////////////////////////////////////////////
 
 extern(C++, std) {
-
-  struct allocator(T) { }
   
   struct char_traits(CharT) { }
   
@@ -175,7 +176,7 @@ extern(C++, std) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Interaction with C++
+// Tests
 ///////////////////////////////////////////////////////////////////////////////
 
 unittest {
