@@ -1,4 +1,5 @@
 #include <string>
+#include <vector>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Instantiation of templates
@@ -132,6 +133,56 @@ void instantiateString() {
   s.compare("");
   s.compare(0, 0, "");
   s.compare(0, 0, "", 0);
+}
+
+
+void instantiateVector() {
+  { std::vector<int> _(1); }
+  { std::vector<int> _(1,1); }
+  std::vector<int> s;
+  s.data();
+  s.size();
+  s.push_back('a');
+  s.pop_back();
+  s.begin();
+  s.end();
+  s.cbegin();
+  s.cend();
+  //
+  const std::vector<int> c;
+  c.begin();
+  c.end();
+  //
+  c.max_size();
+  c.capacity();
+  c.empty();
+  //
+  s.clear();
+  s.reserve(10);
+  s.shrink_to_fit();
+  s.resize(1);
+  s.resize(1, 'a');
+  //
+  c[0];
+  c.at(0);
+  c.back();
+  c.front();
+  s[0];
+  s.at(0);
+  s.back();
+  s.front();
+  //
+  std::vector<int> copy(s);
+  //
+  s.assign(0, 10);
+  //
+  s.insert(s.end(), 0);
+  s.insert(s.end(), 0, 0);
+  //
+  s.erase(s.end());
+  s.erase(s.end(), s.end());
+  //
+  copy = s;
 }
 
 std::string* getStringPtr() {

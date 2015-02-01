@@ -38,6 +38,7 @@ extern(C++, std) {
     alias difference_type = ptrdiff_t;
     alias size_type = size_t;
     
+    // Ctor/dtor
     pragma(mangle, "_ZNSsC1Ev") @disable this();
     pragma(mangle, "_ZNSsC1ERKSs") this(ref const this);
     pragma(mangle, "_ZNSsC1EPKcRKSaIcE") this(const(T*) _, ref const allocator_type _ = defaultAlloc);
