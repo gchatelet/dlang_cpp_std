@@ -28,7 +28,7 @@ extern(C++, std) {
     alias traits_type = TRAITS;
     alias allocator_type = ALLOC;
     alias reference = ref T;
-    alias const_reference = const ref T;
+    alias const_reference = ref const(T);
     alias pointer = T*;
     alias const_pointer = const(T*);
     alias iterator = pointer;
