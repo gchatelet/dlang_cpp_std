@@ -8,3 +8,6 @@ instantiated.o: instantiated.cpp
 cpp_std: instantiated.o cpp_std.d raii.d std_string.d
 	~/dlang/dmd/src/dmd -unittest -g -of$@ $^
 .PHONY: cpp_std
+
+clean:
+	rm *.o cpp_std
