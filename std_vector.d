@@ -62,12 +62,27 @@ extern(C++, std) {
     pragma(mangle, "_ZNSt6vectorIiSaIiEE6resizeEmRKi") void resize(size_t n, T c);
     pragma(mangle, "_ZNSt6vectorIiSaIiEE7reserveEm") void reserve(size_t n = 0);
     pragma(mangle, "_ZNSt6vectorIiSaIiEE13shrink_to_fitEv") void shrink_to_fit();
+        
+    // Element access
+    pragma(mangle, "_ZNSt6vectorIiSaIiEEixEm") ref T opIndex(size_t i);
+    pragma(mangle, "_ZNKSt6vectorIiSaIiEEixEm") ref const(T) opIndex(size_t i) const;
+    
+    pragma(mangle, "_ZNSt6vectorIiSaIiEE2atEm") ref T at(size_t i);
+    pragma(mangle, "_ZNKSt6vectorIiSaIiEE2atEm") ref const(T) at(size_t i) const;
+    
+    pragma(mangle, "_ZNSt6vectorIiSaIiEE4backEv") ref T back();
+    pragma(mangle, "_ZNKSt6vectorIiSaIiEE4backEv") ref const(T) back() const;
+    
+    pragma(mangle, "_ZNSt6vectorIiSaIiEE5frontEv") ref T front();
+    pragma(mangle, "_ZNKSt6vectorIiSaIiEE5frontEv") ref const(T) front() const;
     
     // Modifier
     
     pragma(mangle, "_ZNSt6vectorIiSaIiEE9push_backEOi") void push_back(ref const T _);
     void push_back(const T _) { push_back(_);} // forwards to ref version
     pragma(mangle, "_ZNSt6vectorIiSaIiEE8pop_backEv") void pop_back();
+    
+    
     private:
       void[24] _ = void; // to match sizeof(std::vector) and pad the object correctly.
       __gshared static immutable allocator!T defaultAlloc;
@@ -79,52 +94,51 @@ extern(C++, std) {
 // Tests
 ///////////////////////////////////////////////////////////////////////////////
 
-version(unittest) {
-  vector!int GetOneTwo() {
-    auto s = vector!int(0);
-    s.push_back(1);
-    s.push_back(2);
-    return s;
-  }
+unittest {
+  auto s = vector!int(0);
+  
+  assert(s.begin == s.end);
+  assert(s.cbegin == s.cend);
 }
 
 unittest {
-  auto s = GetOneTwo();
+  const s = vector!int(0);
   
-  assert(s.begin[0] == 1);
-  assert(s.end[-1] == 2);
-
-  assert(s.cbegin[0] == 1);
-  assert(s.cend[-1] == 2);
+  assert(s.begin == s.end);
+  assert(s.cbegin == s.cend);
 }
 
 unittest {
-  const s = GetOneTwo();
-  
-  assert(s.begin[0] == 1);
-  assert(s.end[-1] == 2);
+  auto s = vector!int(0);
 
-  assert(s.cbegin[0] == 1);
-  assert(s.cend[-1] == 2);
+  assert(s.empty);
+  s.push_back(10);
+  assert(!s.empty);
+  assert(s.begin[0] == 10);
+  assert(s[0] == 10);
+  assert(s.at(0) == 10);
+  
+  s[0] = 1;
+  assert(s[0] == 1);
+  
+  s.at(0) = 2;
+  assert(s[0] == 2);
+  
+  assert(s.front == 2);
+  assert(s.back == 2);
+  
+  s.pop_back();
+  assert(s.empty);
+  assert(s.cbegin == s.cend);
 }
 
 
-unittest { // Capacity
-  const c = GetOneTwo();
-  assert(c.size == 2);
-  assert(c.max_size > 0);
-  assert(c.capacity >= 2);
-  assert(!c.empty());
-  //
-  auto s = GetOneTwo();
-  s.clear();
-  assert(s.empty());
-  s.reserve(5);
-  assert(s.capacity() >= 5);
-  s.shrink_to_fit();
-  assert(s.empty());
-  s.resize(1);
-  assert(s.size == 1);
-  s.resize(2, 10);
-  assert(s.size == 2);
+unittest {
+  auto s = vector!int(0);
+  
+  s.resize(5);
+  assert(s.capacity >= 5);
+  assert(s.size == 5);
+  assert(!s.empty);
+  assert(s.begin[0] == 0);
 }
