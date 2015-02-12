@@ -9,7 +9,7 @@ extern (C++, ctor_test) {
         int ctor_copy = 0;
         int dtor = 0;
     }
-    
+
     struct RAII(T) {
       pragma(mangle, "_ZN9ctor_test4RAIIIiEC1EPNS_7CounterE") this(Counter* ptr);
       pragma(mangle, "_ZN9ctor_test4RAIIIiEC1ERKS1_") this(ref const this);
