@@ -11,7 +11,7 @@ namespace ctor_test {
     int ctor_copy = 0;
     int dtor = 0;
   };
-  
+
   template<typename T>
   struct RAII {
     RAII(Counter* ptr) : counter_(ptr) { ++counter_->ctor; }
@@ -99,34 +99,34 @@ void instantiateString() {
   s.find("");
   s.find("", 0, 0);
   s.find('_');
-  
+
   s.rfind(std::string());
   s.rfind("");
   s.rfind("", 0, 0);
   s.rfind('_');
-  
+
   s.find_first_of(std::string());
   s.find_first_of("");
   s.find_first_of("", 0, 0);
   s.find_first_of('_');
-  
+
   s.find_last_of(std::string());
   s.find_last_of("");
   s.find_last_of("", 0, 0);
   s.find_last_of('_');
-  
+
   s.find_first_not_of(std::string());
   s.find_first_not_of("");
   s.find_first_not_of("", 0, 0);
   s.find_first_not_of('_');
-  
+
   s.find_last_not_of(std::string());
   s.find_last_not_of("");
   s.find_last_not_of("", 0, 0);
   s.find_last_not_of('_');
-  
+
   s.substr();
-  
+
   s.compare(std::string());
   s.compare(0, 0, std::string());
   s.compare(0, 0, std::string(), 0, 0);

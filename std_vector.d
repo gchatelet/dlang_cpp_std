@@ -1,5 +1,3 @@
-pragma(lib, "/lib/libstdc++.a"); // get all symbols with "nm -Cgnu -g -A /lib/libstdc++.a"
-
 import std_allocator;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -16,7 +14,7 @@ import std_allocator;
 
 extern(C++, std) {
 
-  struct vector(T, ALLOC = allocator!T) {
+  class vector(T, ALLOC = allocator!T) {
     alias value_type = T;
     alias allocator_type = ALLOC;
     alias reference = ref T;
@@ -95,21 +93,21 @@ extern(C++, std) {
 ///////////////////////////////////////////////////////////////////////////////
 
 unittest {
-  auto s = vector!int(0);
+  auto s = new vector!int(0);
 
   assert(s.begin == s.end);
   assert(s.cbegin == s.cend);
 }
 
 unittest {
-  const s = vector!int(0);
+  const s = new vector!int(0);
 
   assert(s.begin == s.end);
   assert(s.cbegin == s.cend);
 }
 
 unittest {
-  auto s = vector!int(0);
+  auto s = new vector!int(0);
 
   assert(s.empty);
   s.push_back(10);
@@ -134,7 +132,7 @@ unittest {
 
 
 unittest {
-  auto s = vector!int(0);
+  auto s = new vector!int(0);
 
   s.resize(5);
   assert(s.capacity >= 5);
