@@ -2,14 +2,24 @@
 
 ## Struct VS class
 
-Since we're unsure wether they should be implemented as structs or classes I implemented `std::string` as both a [D struct](std_string_struct.d) and a [D class](std_string_class.d).
+Since we're unsure whether they should be implemented as structs or classes I implemented `std::string` as both a [D struct](std_string_struct.d) and a [D class](std_string_class.d).
 Summarizing the differences in the table below.
 
 |                                |struct        | class         |
 |--------------------------------|--------------|---------------|
-|same semantic on D and C++ side | yes          | no            |
-|same type mangling              | no           | yes           |
-|D side constructible            | yes          | no            |
+|D and C++ have value semantics  | yes          | no            |
+|D type manges as C++            | no           | yes           |
+|Stack constructible on D side   | yes          | no            |
+
+### Known issues
+
+Since class implementation uses reference semantic, some functions can't be called :
+
+    // would assign pointers
+    basic_string opAssign(const basic_string s);
+
+    // C++ would return a value but D interpret it as pointer
+    basic_string substr(size_t pos = 0, size_t len = npos) const;
 
 ## Ctors/Dtor are not typed alike between C++ and D
 

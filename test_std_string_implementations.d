@@ -1,12 +1,27 @@
+///////////////////////////////////////////////////////////////////////////////
+// Import implementations
+///////////////////////////////////////////////////////////////////////////////
+
 import std_string_class;
 import std_string_struct;
 
 extern(C++) {
+  // Returns a statically allocated string by ptr.
   std_string* getStringPtr();
+  // Returns a dynamicaly allocated string by ptr.
   std_string* getStringPtr(const(char*) ptr,size_t size);
+  // Returns a statically allocated string by reference.
   ref std_string getStringRef();
-  std_string getStringCopy();
+  // Returns a statically allocated string by copy.
+  std_string getStringCopy(); // Can't work with class implementation.
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// Tests
+// Most of the tests below will allocate a string on the C++ side via the
+// make function below.
+// Since we don't deallocate, this program leaks memory.
+///////////////////////////////////////////////////////////////////////////////
 
 version(use_structs) {
 ref std_string make(string str) {
@@ -20,15 +35,7 @@ std_string make(string str) {
 }
 }
 
-ref std_string make(ref const std_string str) {
-  return *getStringPtr(str.c_str, str.size);
-}
-
 import std.stdio;
-
-///////////////////////////////////////////////////////////////////////////////
-// Tests
-///////////////////////////////////////////////////////////////////////////////
 
 void test_string_copy_ctor() {
 version(use_structs) {
@@ -66,7 +73,7 @@ void test_string_const_iterator() {
   assert(s.cend[0] == '\0');
 }
 
-void test_string_capacity() { // Capacity
+void test_string_capacity() {
   const c = make("ab");
   assert(c.size == 2);
   assert(c.length == 2);
@@ -87,7 +94,7 @@ void test_string_capacity() { // Capacity
   assert(s.size == 2);
 }
 
-void test_string_element_access() { // Element access
+void test_string_element_access() {
   const c = make("ab");
   assert(c[0] == 'a');
   assert(c.at(1) == 'b');
@@ -102,7 +109,7 @@ void test_string_element_access() { // Element access
   assert(s[0] == 'c');
 }
 
-void test_string_append() { // Modifiers append
+void test_string_append() {
   const constant = make("abc");
   auto s = make("");
 
@@ -126,7 +133,7 @@ void test_string_append() { // Modifiers append
   assert(s.asArray == "aa");
 }
 
-void test_string_assign() { // Modifiers assign
+void test_string_assign() {
   const constant = make("abc");
   auto s = make("");
 
@@ -146,7 +153,7 @@ void test_string_assign() { // Modifiers assign
   assert(s.asArray == "aa");
 }
 
-void test_string_insert() { // Modifiers insert
+void test_string_insert() {
   const abc = make("abc");
   const def = make("def");
   auto s = make("abc");
@@ -171,14 +178,14 @@ void test_string_insert() { // Modifiers insert
   assert(s.asArray == "affbc");
 }
 
-void test_string_erase() { // Modifiers erase
+void test_string_erase() {
   auto s = make("abc");
 
   s.erase(1, 1);
   assert(s.asArray == "ac");
 }
 
-void test_string_push_back() { // Modifiers push_back, pop_back
+void test_string_push_back() {
   auto s = make("");
   assert(s.size() == 0);
 
