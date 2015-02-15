@@ -8,7 +8,7 @@ Summarizing the differences in the table below.
 |                                |struct        | class         |
 |--------------------------------|--------------|---------------|
 |D and C++ have value semantics  | yes          | no            |
-|D type manges as C++            | no           | yes           |
+|D type mangles as C++           | no           | yes           |
 |Stack constructible on D side   | yes          | no            |
 
 ### Known issues
