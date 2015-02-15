@@ -17,7 +17,6 @@ extern(C++) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Tests
 // Most of the tests below will allocate a string on the C++ side via the
 // make function below.
 // Since we don't deallocate, this program leaks memory.
@@ -36,20 +35,6 @@ std_string make(string str) {
 }
 
 import std.stdio;
-
-void test_string_copy_ctor() {
-version(use_structs) {
-  auto string_from_d = std_string("string_from_d\0overun");
-  assert(string_from_d.asArray == "string_from_d");
-
-  auto string_copy_from_d = std_string(string_from_d);
-  assert(string_copy_from_d.asArray == string_from_d.asArray);
-
-  string_copy_from_d.push_back('_');
-  assert(string_copy_from_d.asArray != string_from_d.asArray);
-  assert(string_copy_from_d.data !is string_from_d.data);
-}
-}
 
 void test_string_iterator() {
   auto s = make("ab");
@@ -245,13 +230,31 @@ void test_string_find() {
   assert(s.find_last_not_of('_') == 4);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// Test below currently doesn't work with classes.
+///////////////////////////////////////////////////////////////////////////////
+
 void test_string_substr() {
+version(use_structs) {
   const s = make("hello");
-  version(use_structs) {
-    // substr return by value, this code cannot work out of the box with class implementation.
-    assert(s.substr().asArray == s.asArray);
-    assert(s.substr(1, 2).asArray == "el");
-  }
+  // substr return by value, this code cannot work out of the box with class implementation.
+  assert(s.substr().asArray == s.asArray);
+  assert(s.substr(1, 2).asArray == "el");
+}
+}
+
+void test_string_copy_ctor() {
+version(use_structs) {
+  auto string_from_d = std_string("string_from_d\0overun");
+  assert(string_from_d.asArray == "string_from_d");
+
+  auto string_copy_from_d = std_string(string_from_d);
+  assert(string_copy_from_d.asArray == string_from_d.asArray);
+
+  string_copy_from_d.push_back('_');
+  assert(string_copy_from_d.asArray != string_from_d.asArray);
+  assert(string_copy_from_d.data !is string_from_d.data);
+}
 }
 
 import std.stdio;

@@ -3,7 +3,7 @@
 ## Struct VS class
 
 Since we're unsure whether they should be implemented as structs or classes I implemented `std::string` as both a [D struct](std_string_struct.d) and a [D class](std_string_class.d).
-Summarizing the differences in the table below.
+Summarizing the differences in the table below :
 
 |                                |struct        | class         |
 |--------------------------------|--------------|---------------|
@@ -11,16 +11,20 @@ Summarizing the differences in the table below.
 |D type mangles as C++           | no           | yes           |
 |Stack constructible on D side   | yes          | no            |
 
-### Known issues
-
 Since class implementation uses reference semantic, some functions can't be called :
 
-    // a = b; would assign pointers
+    // a = b; would assign pointers instead of values
     basic_string opAssign(const basic_string s);
 
-    // C++ would return a value but D interpret it as pointer
+    // C++ would return a value but D interprets it as pointer
     // basic_string a = b.substr(0, 2);
     basic_string substr(size_t pos = 0, size_t len = npos) const;
+
+Currently, I find the struct version :
+- easier to understand : value semantic matches C++, lifetime is deterministic, copy does copy.
+- requires less glue (no need to transtype between pointers and values )
+- is more efficient (stack allocated and direct access)
+  - this should be doable with a class too but DMD currently generates a virtual table for final classes which prevents us from controlling the memory layout.
 
 ## Ctors/Dtor are not typed alike between C++ and D
 
