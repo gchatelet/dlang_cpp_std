@@ -14,6 +14,8 @@ extern(C++) {
   ref std_string getStringRef();
   // Returns a statically allocated string by copy.
   std_string getStringCopy(); // Can't work with class implementation.
+  // Returns the size of the string
+  pragma(mangle, "_Z13getStringSizeRKSs") size_t getStringSize(ref const std_string str);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -231,13 +233,28 @@ void test_string_find() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Test below currently doesn't work with classes.
+// Test below works with classes by hacking the type system.
 ///////////////////////////////////////////////////////////////////////////////
 
+void test_string_pass_by_const_ref() {
+  const s = make("hello");
+version(use_structs) {
+  assert(getStringSize(s) == 5);
+}
+version(use_classes) {
+  assert(getStringSize(*s.c_ptr) == 5);
+  assert(getStringSize(s.c_ref) == 5);
+}
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Tests below currently don't work with classes because of layout issues.
+///////////////////////////////////////////////////////////////////////////////
+
+// substr return by value, this code cannot work out of the box with class implementation.
 void test_string_substr() {
 version(use_structs) {
   const s = make("hello");
-  // substr return by value, this code cannot work out of the box with class implementation.
   assert(s.substr().asArray == s.asArray);
   assert(s.substr(1, 2).asArray == "el");
 }
@@ -274,6 +291,7 @@ void main() {
   test_string_copy();
   test_string_find();
   test_string_substr();
+  test_string_pass_by_const_ref();
 
   version(use_structs) {
     writeln(getStringPtr().asArray());

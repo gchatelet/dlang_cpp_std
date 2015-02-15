@@ -202,3 +202,7 @@ std::string& getStringRef() {
 std::string getStringCopy() {
   return "string copy";
 }
+
+size_t getStringSize(const std::string& string) {
+  return string.size();
+}

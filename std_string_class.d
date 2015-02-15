@@ -163,6 +163,8 @@ extern(C++, std) {
 
     // D helpers
     const(T[]) asArray() const { return c_str()[0 .. size()]; }
+    const (basic_string*) c_ptr() const { return cast(const std_string*)(this); }
+    ref const(basic_string) c_ref() const { return *cast(const std_string*)(this); }
 
     private:
       // Dmd currently creates a vptr for every class.
