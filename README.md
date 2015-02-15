@@ -26,6 +26,10 @@ Currently, I find the struct version :
 - is more efficient (stack allocated and direct access)
   - this should be doable with a class too but DMD currently generates a virtual table for final classes which prevents us from controlling the memory layout.
 
+###Caveats
+
+struct implementation would not work if C++ code rely on interior pointers.
+
 ## Ctors/Dtor are not typed alike between C++ and D
 
 See [bug 14086](https://issues.dlang.org/show_bug.cgi?id=14086).
