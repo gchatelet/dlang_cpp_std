@@ -15,10 +15,11 @@ Summarizing the differences in the table below.
 
 Since class implementation uses reference semantic, some functions can't be called :
 
-    // would assign pointers
+    // a = b; would assign pointers
     basic_string opAssign(const basic_string s);
 
     // C++ would return a value but D interpret it as pointer
+    // basic_string a = b.substr(0, 2);
     basic_string substr(size_t pos = 0, size_t len = npos) const;
 
 ## Ctors/Dtor are not typed alike between C++ and D
