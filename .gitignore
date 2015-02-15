@@ -26,3 +26,5 @@
 *.exe
 *.out
 *.app
+cpp_std_class
+cpp_std_struct

@@ -190,6 +190,10 @@ std::string* getStringPtr() {
   return &s;
 }
 
+std::string* getStringPtr(const char* ptr, size_t count) {
+  return new std::string(ptr, count);
+}
+
 std::string& getStringRef() {
   static std::string s("string from ref");
   return s;
