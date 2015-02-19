@@ -45,7 +45,7 @@ This leads to incorrect mangling of `extern(C++)` constructors and destructors a
 
 ###Windows
 
-+ In case we decide to go for structs, name mangling will be incorrect on Windows platforms which [encodes structs and classes differently](http://en.wikipedia.org/wiki/Visual_C%2B%2B_name_mangling#Data_Type).
++ In case we decide to go for structs, name mangling will be incorrect on Windows platforms which [encodes structs and classes differently](http://en.wikipedia.org/wiki/Visual_C%2B%2B_name_mangling#Data_Type) - [bug 14193 ](https://issues.dlang.org/show_bug.cgi?id=14193)
 
 ## Exceptions handling
 
